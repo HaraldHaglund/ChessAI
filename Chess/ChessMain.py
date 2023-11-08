@@ -1,4 +1,6 @@
 import pygame as p
+import pygame.draw
+
 from Chess import ChessEngine
 
 WIDTH = HEIGHT = 512.0
@@ -29,7 +31,7 @@ def main():
     clock = p.time.Clock()
     screen.fill(p.Color("white"))
     gs = ChessEngine.GameState()
-    loadImages()  # Load images only once
+    loadImages()  # Load images (only done once)
     running = True
     while running:
         for e in p.event.get():
@@ -38,14 +40,13 @@ def main():
         clock.tick(MAX_FPS)
         p.display.flip()
 
-
 '''
 Responsible for all the graphics within the game
 '''
 
 
 def drawGameState(screen, gs):
-    # TODO: Add piece highlight or piece suggestion
+    # Add piece highlight or piece suggestion
     drawBoard(screen)
     drawPieces(screen, gs.board)
 
@@ -54,11 +55,15 @@ def drawGameState(screen, gs):
 Draw the squares on the board
 '''
 
-
+# TODO: Draw grid
 def drawBoard(screen):
+    blockSize = 20
+    BLACK = (0, 0, 0)
+    WHITE = (200, 200, 200)
     for row in range(DIMENSION):
         for col in range(DIMENSION):
-            print(row, col)
+            rect = pygame.Rect(row, col, blockSize, blockSize)
+            pygame.draw.rect(screen, BLACK, rect, 1)
 
 
 '''
