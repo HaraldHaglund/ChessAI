@@ -8,7 +8,7 @@ class GameState():
             ['_',   '_',  '_', '_',  '_',  '_',  '_',  '_'],
             ['_',   '_',  '_', '_',  '_',  '_',  '_',  '_'],
             ['_',   '_',  '_', '_',  '_',  '_',  '_',  '_'],
-            ['bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp', ],
+            ['wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp', ],
             ['wR', 'wN', 'wB', 'wQ', 'wK', 'wB', 'wN', 'wR']
         ]
         # For the future, this allows us to represent all pieces in 5 bit binary, first two digits represent colour, last three type.

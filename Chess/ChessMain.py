@@ -64,7 +64,7 @@ def drawBoard(screen):
     for row in range(DIMENSION):
         for col in range(DIMENSION):
             color = white if (row + col) % 2 == 0 else black
-            pygame.draw.rect(screen, color, p.Rect(col*SQ_SIZE, row*SQ_SIZE, SQ_SIZE, SQ_SIZE))
+            pygame.draw.rect(screen, color, p.Rect(col * SQ_SIZE, row * SQ_SIZE, SQ_SIZE, SQ_SIZE))
 
 
 '''
@@ -73,11 +73,15 @@ Draw the pieces on the board using the current game state
 
 
 def drawPieces(screen, board):
-    pass
+    for row in range(DIMENSION):
+        for col in range(DIMENSION):
+            piece = board[row][col]
+            if piece != '_':
+                screen.blit(IMAGES[piece], p.Rect(col * SQ_SIZE, row * SQ_SIZE, SQ_SIZE, SQ_SIZE))
 
 
 '''
-Standard python convention
+Standard python convention, just runs main
 '''
 
 if __name__ == "__main__":
