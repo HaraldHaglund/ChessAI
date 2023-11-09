@@ -3,7 +3,7 @@ import pygame.draw
 
 from Chess import ChessEngine
 
-WIDTH = HEIGHT = 512.0
+WIDTH = HEIGHT = 512
 DIMENSION = 8
 SQ_SIZE = HEIGHT // DIMENSION
 MAX_FPS = 15
@@ -37,8 +37,10 @@ def main():
         for e in p.event.get():
             if e.type == p.QUIT:
                 running = False
+        drawGameState(screen, gs)
         clock.tick(MAX_FPS)
         p.display.flip()
+
 
 '''
 Responsible for all the graphics within the game
@@ -55,15 +57,14 @@ def drawGameState(screen, gs):
 Draw the squares on the board
 '''
 
-# TODO: Draw grid
+
 def drawBoard(screen):
-    blockSize = 20
-    BLACK = (0, 0, 0)
-    WHITE = (200, 200, 200)
+    white = [237, 210, 175]
+    black = [173, 129, 90]
     for row in range(DIMENSION):
         for col in range(DIMENSION):
-            rect = pygame.Rect(row, col, blockSize, blockSize)
-            pygame.draw.rect(screen, BLACK, rect, 1)
+            color = white if (row + col) % 2 == 0 else black
+            pygame.draw.rect(screen, color, p.Rect(col*SQ_SIZE, row*SQ_SIZE, SQ_SIZE, SQ_SIZE))
 
 
 '''
