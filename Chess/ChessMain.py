@@ -8,6 +8,7 @@ DIMENSION = 8
 SQ_SIZE = HEIGHT // DIMENSION
 MAX_FPS = 15
 IMAGES = {}
+playerClicks = []
 
 '''
 Initialize a dictionary for the images that will be called once in main
@@ -32,13 +33,12 @@ def main():
     gs = ChessEngine.GameState()
     loadImages()  # Load images (only done once)
     running = True
-    playerClicks = []  # First position represents the selected piece, second represents square to move to.
     while running:
         for e in p.event.get():
             if e.type == p.QUIT:
                 running = False
             elif e.type == p.MOUSEBUTTONDOWN:
-                selectAndMovePieces(gs, playerClicks)
+                selectAndMovePieces(gs)
         drawGameState(screen, gs)
         clock.tick(MAX_FPS)
         p.display.flip()
@@ -52,6 +52,7 @@ Responsible for all the graphics within the game
 def drawGameState(screen, gs):
     # Possible to add piece highlight here
     drawBoard(screen)
+    drawHighlight(screen)
     drawPieces(screen, gs.board)
 
 
@@ -67,6 +68,14 @@ def drawBoard(screen):
         for col in range(DIMENSION):
             color = light if (row + col) % 2 == 0 else dark
             pygame.draw.rect(screen, color, p.Rect(col * SQ_SIZE, row * SQ_SIZE, SQ_SIZE, SQ_SIZE))
+
+
+def drawHighlight(screen):
+    if len(playerClicks) != 0:
+        darkHighlight = [58, 118, 49]
+        lightHighlight = [114, 165, 106]
+        color = lightHighlight if (playerClicks[0][1] + playerClicks[0][0]) % 2 == 0 else darkHighlight
+        pygame.draw.rect(screen, color, p.Rect(playerClicks[0][1] * SQ_SIZE, playerClicks[0][0] * SQ_SIZE, SQ_SIZE, SQ_SIZE))
 
 
 '''
@@ -88,33 +97,33 @@ The board then gets updated.
 '''
 
 
-def selectAndMovePieces(gs, playerClicks):
+def selectAndMovePieces(gs):
     col_pos = int(p.mouse.get_pos()[0] / SQ_SIZE)
     row_pos = int(p.mouse.get_pos()[1] / SQ_SIZE)
     if len(playerClicks) == 0:  # First click
-        firstClick(row_pos, col_pos, playerClicks)
+        firstClick(gs, row_pos, col_pos)
     elif len(playerClicks) == 1:  # Second click
-        secondClick(row_pos, col_pos, playerClicks)
-        updateGameBoard(gs, playerClicks)
+        secondClick(row_pos, col_pos)
+        updateGameBoard(gs)
 
 
 '''
-Selects the first click
+Select the first click
 '''
 
 
-def firstClick(row_pos, col_pos, playerClicks):
-    if legalFirstMove():  # Ensure square is a piece.
+def firstClick(gs, row_pos, col_pos):
+    if legalFirstMove(gs, row_pos, col_pos):
         pieceCoord = (row_pos, col_pos)
         playerClicks.append(pieceCoord)
 
 
 '''
-Selects the second click
+Select the second click
 '''
 
 
-def secondClick(row_pos, col_pos, playerClicks):
+def secondClick(row_pos, col_pos):
     if legalSecondMove():
         pieceCoord = (row_pos, col_pos)
         playerClicks.append(pieceCoord)
@@ -125,7 +134,7 @@ Updates the game board based on the state of playerClicks
 '''
 
 
-def updateGameBoard(gs, playerClicks):
+def updateGameBoard(gs):
     # Update game board
     piece1 = gs.board[playerClicks[0][0]][playerClicks[0][1]]
     gs.board[playerClicks[0][0]][playerClicks[0][1]] = "_"
@@ -138,8 +147,8 @@ Ensure that the first click is legal
 '''
 
 
-def legalFirstMove():
-    return True  # gs.board[row_pos][col_pos] != "_"
+def legalFirstMove(gs, row_pos, col_pos):
+    return gs.board[row_pos][col_pos] != "_"
 
 
 '''
@@ -152,7 +161,7 @@ def legalSecondMove():
 
 
 '''
-Standard python convention, just runs main
+Standard python convention, this just runs main
 '''
 
 if __name__ == "__main__":
