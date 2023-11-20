@@ -70,6 +70,11 @@ def drawBoard(screen):
             pygame.draw.rect(screen, color, p.Rect(col * SQ_SIZE, row * SQ_SIZE, SQ_SIZE, SQ_SIZE))
 
 
+'''
+Draw the highlighted piece
+'''
+
+
 def drawHighlight(screen):
     if len(playerClicks) != 0:
         darkHighlight = [58, 118, 49]
@@ -148,7 +153,7 @@ Ensure that the first click is legal
 
 
 def legalFirstMove(gs, row_pos, col_pos):
-    return gs.board[row_pos][col_pos] != "_"
+    return gs.board[row_pos][col_pos] != "_"  # Add CorrectTurn and !InCheck
 
 
 '''
